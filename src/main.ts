@@ -9,32 +9,30 @@ type Person = {
   }
 }
 
-type KeyValuePair<K, V> = {
-  key: K,
-  value: V
+type ReadOnlyPerson = {
+  readonly id: number,
+  readonly name: string,
+  readonly age: number,
+  readonly gender?: string,
+  readonly address?: {
+    city: string,
+    street: string
+  }
 }
 
-const kvp: KeyValuePair<string, number> = { key: "abc", value: 10 };
-const kvp1: KeyValuePair<number, Person> = { key: 123, value: { id: 123, name: "Vasya", age: 25 } };
-
-function findById<T extends {id: number}> (array: T[], id: number): T | undefined {
-  return array.find(item => item.id === id);
+type ReadOnlyPerson2 = {
+  readonly [K in keyof Person]: Person[K]
 }
 
-function findByField<T> (array: T[], field: keyof T, value: unknown): T[] {
-  return array.filter(item => item[field] == value);
+type ReadOnlyType<T> = {
+  readonly [K in keyof T]: T[K]
 }
-const arr: Person[] = [
-  {id: 123, name: "Vasya", age: 25},
-  {id: 124, name: "Petya", age: 25},
-];
-console.log("array: ");
-console.log(arr);
-console.log("filter by id, witch exists (124):")
-console.log(findByField(arr, "id", 124));
-console.log("filter by id, witch doesn't exists (125):");
-console.log(findByField(arr, "id", 125));
-console.log("filter by age (25):");
-console.log(findByField(arr, "age", 25));
-console.log("filter by name (Vasya):");
-console.log(findByField(arr, "name", "Vasya"));
+
+const person1: Person = { id: 123, name: "Vasya", age: 25 };
+person1.name = "Petya";
+const person2: ReadOnlyPerson = { id: 123, name: "Vasya", age: 25 };
+// person2.name = "Petya"; //not work
+const person3: ReadOnlyPerson2 = { id: 123, name: "Vasya", age: 25 };
+// person3.name = "Petya"; //not work
+const person4: ReadOnlyType<Person> = { id: 123, name: "Vasya", age: 25 };
+
