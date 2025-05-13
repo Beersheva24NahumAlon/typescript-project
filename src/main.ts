@@ -1,32 +1,40 @@
-type Color = "blue" | "red" | "green" | "yellow";
-let color: Color = "blue";``
-// let color: Color = "kuku"; //not work
-
-enum DayOfWeek {
-  Sunday, Monday, Tuesday, Wensday, Thursday, Frayday, Saturday, Sun = 0
+type Person = {
+  id: number,
+  name: string,
+  age: number,
+  gender?: string,
+  address?: {
+    city: string,
+    street: string
+  }
 }
-console.log(DayOfWeek.Sun === DayOfWeek.Sunday);
 
-
-let a: any = 10; //not recommended
-a = "text";
-a = true;
-
-let b: unknown = 10; //very recommended
-b = "text";
-// b++; // not work
-// b.startsWith("s"); //not work
-typeof b === "number" && b++;
-typeof b === "string" && b.startsWith("t");
-
-const tuple: [number, string] = [10, "text"];
-tuple[1].startsWith("t");
-tuple[0]++;
-tuple.push("kyku"); //issue, good to avoid it
-
-type StringNumberObject = {[key: string]:number};
-function getOccurrencesObject(array: string[]): StringNumberObject{
-  return array.reduce((acc: StringNumberObject, cur) => ({...acc, [cur]: acc[cur] ? ++acc[cur] : 1}), {});
+type KeyValuePair<K, V> = {
+  key: K,
+  value: V
 }
-const occurrences = getOccurrencesObject(["a", "a", "b"]);
-console.log(occurrences);
+
+const kvp: KeyValuePair<string, number> = { key: "abc", value: 10 };
+const kvp1: KeyValuePair<number, Person> = { key: 123, value: { id: 123, name: "Vasya", age: 25 } };
+
+function findById<T extends {id: number}> (array: T[], id: number): T | undefined {
+  return array.find(item => item.id === id);
+}
+
+function findByField<T> (array: T[], field: keyof T, value: unknown): T[] {
+  return array.filter(item => item[field] == value);
+}
+const arr: Person[] = [
+  {id: 123, name: "Vasya", age: 25},
+  {id: 124, name: "Petya", age: 25},
+];
+console.log("array: ");
+console.log(arr);
+console.log("filter by id, witch exists (124):")
+console.log(findByField(arr, "id", 124));
+console.log("filter by id, witch doesn't exists (125):");
+console.log(findByField(arr, "id", 125));
+console.log("filter by age (25):");
+console.log(findByField(arr, "age", 25));
+console.log("filter by name (Vasya):");
+console.log(findByField(arr, "name", "Vasya"));
