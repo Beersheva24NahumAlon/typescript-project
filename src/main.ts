@@ -1,24 +1,23 @@
-type Person = {
-  id: number,
-  name: string,
-  age: number,
-  gender?: string,
-  address?: {
-    city: string,
-    street: string
-  }
+type StringNumber = Record<string, number>;
+
+function isAnagram(word1: string, word2: string): boolean {
+  let res = false;
+    if (word1.length == word2.length) {
+      const lettersCount: StringNumber = {};
+      Array.from(word1).forEach(letter => lettersCount[letter] != undefined ? lettersCount[letter]++ : lettersCount[letter] = 1);
+      Array.from(word2).forEach(letter => {
+        lettersCount[letter] != undefined ? lettersCount[letter]-- : lettersCount[letter] = -1
+        if (lettersCount[letter] == 0) {
+          delete lettersCount[letter];
+        }
+      });
+      console.log(lettersCount);
+      if (Object.keys(lettersCount).length === 0) {
+        res = true;
+      }
+    }
+  return res;
 }
 
-function update<T, K extends keyof T>(object: T, field: K, value: T[K]): void {
-    object[field] = value;
-}
-
-const person: Person = {id: 123, name: "Vasya", age: 25};
-console.log("before updating:");
-console.log(person);
-console.log("updating age to 26:");
-update(person, "age", 26);
-console.log("updating name to 'Petya':");
-update(person, "name", "Petya");
-console.log("after updating:");
-console.log(person);
+console.log(isAnagram("hello", "olljh"));
+console.log(isAnagram("hello", "olleh"));
