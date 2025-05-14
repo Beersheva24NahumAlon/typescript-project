@@ -23,7 +23,7 @@ export default class StoreArrayImpl implements Store {
             throw Error(`item with id ${id} doesn't exist in the store`);
         }
         const index = this._items.findIndex((item) => item.id == id);
-        this._items.splice(index);
+        this._items.splice(index, 1);
     }
     findByPredicate(predicate: Predicate): Item[] {
         return this._items.filter(predicate);
@@ -35,6 +35,5 @@ export default class StoreArrayImpl implements Store {
     getAllItems(): Item[] {
         return this.findByPredicate((_item) => true);
     }
-
 }
 
