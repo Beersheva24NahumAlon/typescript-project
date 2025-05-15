@@ -1,10 +1,12 @@
 import Item from "./Item";
 import Predicate from "./Predicate";
-import Store from "./Store";
+import StoreAbstract from "./StoreAbstract";
 
-export default class StoreMapImpl implements Store {
+export default class StoreMapImpl extends StoreAbstract {
 
-    constructor(private _items: Map<number, Item>) {}
+    constructor(private _items: Map<number, Item>) {
+        super();
+    }
 
     addItem(item: Item): void {
         const id = item.id;
@@ -29,15 +31,5 @@ export default class StoreMapImpl implements Store {
     findByPredicate(predicate: Predicate): Item[] {
         const items = this._items.values();
         return Array.from(items).filter(predicate);
-    }
-
-    removeByPredicate(predicate: Predicate): void {
-        const removeItems = this.findByPredicate(predicate);
-        removeItems.forEach(item => this.removeItem(item.id));
-    }
-    
-    getAllItems(): Item[] {
-        return this.findByPredicate(_item => true);
-    }
-    
+    }    
 }

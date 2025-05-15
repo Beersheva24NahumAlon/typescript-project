@@ -1,10 +1,12 @@
 import Item from "./Item";
 import Predicate from "./Predicate";
-import Store from "./Store";
+import StoreAbstract from "./StoreAbstract";
 
-export default class StoreArrayImpl implements Store {
+export default class StoreArrayImpl extends StoreAbstract {
 
-    constructor(private _items: Item[]) {}
+    constructor(private _items: Item[]) {
+        super();
+    }
 
     addItem(item: Item): void {
         const id = item.id;
@@ -26,13 +28,6 @@ export default class StoreArrayImpl implements Store {
     }
     findByPredicate(predicate: Predicate): Item[] {
         return this._items.filter(predicate);
-    }
-    removeByPredicate(predicate: Predicate): void {
-        const removeItems = this.findByPredicate(predicate);
-        removeItems.forEach(item => this.removeItem(item.id));
-    }
-    getAllItems(): Item[] {
-        return this.findByPredicate(_item => true);
     }
 }
 
